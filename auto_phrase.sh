@@ -1,14 +1,20 @@
 #!/bin/bash
 # RAW_TRAIN is the input of AutoPhrase, where each line is a single document.
-RAW_TRAIN=${RAW_TRAIN:- data/DBLP.txt}
+#RAW_TRAIN=${RAW_TRAIN:- data/DBLP.txt}#huangweijing
+#RAW_TRAIN=${RAW_TRAIN:- data/DBLP_10000.txt}
+#RAW_TRAIN=${RAW_TRAIN:- data/huang_try.txt}
+#RAW_TRAIN=${RAW_TRAIN:- data/raw20newsgroups.txt}
+RAW_TRAIN=${RAW_TRAIN:- data/20newsgroups.txt}
 # When FIRST_RUN is set to 1, AutoPhrase will run all preprocessing. 
 # Otherwise, AutoPhrase directly starts from the current preprocessed data in the tmp/ folder.
 FIRST_RUN=${FIRST_RUN:- 1}
 # When ENABLE_POS_TAGGING is set to 1, AutoPhrase will utilize the POS tagging in the phrase mining. 
 # Otherwise, a simple length penalty mode as the same as SegPhrase will be used.
 ENABLE_POS_TAGGING=${ENABLE_POS_TAGGING:- 1}
+echo "ENABLE_POS_TAGGING=$ENABLE_POS_TAGGING"
 # A hard threshold of raw frequency is specified for frequent phrase mining, which will generate a candidate set.
-MIN_SUP=${MIN_SUP:- 30}
+#MIN_SUP=${MIN_SUP:- 30}
+MIN_SUP=${MIN_SUP:- 5}#huangweijing
 # You can also specify how many threads can be used for AutoPhrase
 THREAD=${THREAD:- 10}
 
@@ -23,10 +29,11 @@ reset=`tput sgr0`
 
 echo ${green}===Compilation===${reset}
 
-COMPILE=${COMPILE:- 1}
-if [ $COMPILE -eq 1 ]; then
-    bash compile.sh
-fi
+#add by huangweijing
+#COMPILE=${COMPILE:- 1}
+#if [ $COMPILE -eq 1 ]; then
+#    bash compile.sh
+#fi
 
 mkdir -p tmp
 mkdir -p results

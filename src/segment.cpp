@@ -64,6 +64,7 @@ void process(const vector<TOTAL_TOKENS_TYPE>& tokens, const vector<POS_ID_TYPE>&
     for (int i = 0; i < ret.size(); ++ i) {
         fprintf(out, "%s%c", ret[i].c_str(), i + 1 == ret.size() ? '\n' : ' ');
     }
+
 }
 
 inline bool byQuality(const Pattern& a, const Pattern& b)
@@ -79,6 +80,16 @@ int main(int argc, char* argv[])
     omp_set_num_threads(NTHREADS);
 
     Dump::loadSegmentationModel(SEGMENTATION_MODEL);
+
+    //huangweijing
+    for(int i=0;i<patterns.size();i++){
+        cerr << patterns[i].label << " " << patterns[i].hashValue << " ";
+        for(int j=0;j<patterns[i].size();j++){
+            cerr << patterns[i].tokens[j];
+        }
+        cerr << " " << patterns[i].size() << " " << patterns[i].currentFreq<< " " << patterns[i].probability;
+        cerr << " " << patterns[i].quality << endl;
+    }
 
     sort(patterns.begin(), patterns.end(), byQuality);
 

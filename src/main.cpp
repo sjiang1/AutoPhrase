@@ -15,6 +15,7 @@ using FrequentPatternMining::patterns;
 int main(int argc, char* argv[])
 {
     parseCommandFlags(argc, argv);
+    printf("%s\n",argv[1]);
 
     sscanf(argv[1], "%d", &NTHREADS);
     omp_set_num_threads(NTHREADS);

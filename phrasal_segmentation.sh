@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
 SEGMENTATION_MODEL=results/segmentation.model
-TEXT_TO_SEG=${TEXT_TO_SEG:-data/EN/DBLP.5K.txt}
+#TEXT_TO_SEG=${TEXT_TO_SEG:-data/EN/DBLP.5K.txt}
+TEXT_TO_SEG=${TEXT_TO_SEG:-data/20newsgroups.txt} #huangweijing
 HIGHLIGHT_MULTI=0.5
 HIGHLIGHT_SINGLE=0.8
 ENABLE_POS_TAGGING=1
@@ -10,10 +12,10 @@ reset=`tput sgr0`
 
 echo ${green}===Compilation===${reset}
 
-COMPILE=${COMPILE:- 1}
-if [ $COMPILE -eq 1 ]; then
-    bash compile.sh
-fi
+#COMPILE=${COMPILE:- 1}
+#if [ $COMPILE -eq 1 ]; then
+#    bash compile.sh
+#fi
 
 mkdir -p tmp
 mkdir -p results
@@ -49,6 +51,10 @@ POS_TAGS=tmp/pos_tags_tokenized_text_to_seg.txt
 ### END Part-Of-Speech Tagging ###
 
 echo ${green}===Phrasal Segmentation===${reset}
+echo "THREAD=$THREAD"
+echo "SEGMENTATION_MODEL=$SEGMENTATION_MODEL"
+echo "HIGHLIGHT_MULTI=$HIGHLIGHT_MULTI"
+echo "HIGHLIGHT_SINGLE=$HIGHLIGHT_SINGLE"
 
 if [ $ENABLE_POS_TAGGING -eq 1 ]; then
 	time ./bin/segphrase_segment \

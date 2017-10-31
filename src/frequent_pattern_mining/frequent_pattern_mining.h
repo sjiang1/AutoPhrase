@@ -15,6 +15,7 @@ namespace FrequentPatternMining
         double probability, quality;
         ULL hashValue;
         int currentFreq;
+        
 
         void dump(FILE* out) {
             Binary::write(out, currentFreq);
