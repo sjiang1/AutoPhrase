@@ -1,6 +1,7 @@
 #include "utils/parameters.h"
 #include "utils/commandline_flags.h"
 #include "utils/utils.h"
+#include "utils/filtered_phrases.h"
 #include "frequent_pattern_mining/frequent_pattern_mining.h"
 #include "data/documents.h"
 #include "classification/feature_extraction.h"
@@ -82,14 +83,32 @@ int main(int argc, char* argv[])
     Dump::loadSegmentationModel(SEGMENTATION_MODEL);
 
     //huangweijing
-    for(int i=0;i<patterns.size();i++){
-        cerr << patterns[i].label << " " << patterns[i].hashValue << " ";
+    vector<TOKEN_ID_TYPE> tokens_to_check;
+    TOKEN_ID_TYPE token1=22324;
+    TOKEN_ID_TYPE token2=12633;
+    tokens_to_check.push_back(token1);
+    tokens_to_check.push_back(token2);
+    int pattern_id=FrequentPatternMining::whichPattern(tokens_to_check);
+    cerr << pattern_id << " found by whichPattern()" <<endl;
+    int i=pattern_id;
+    {
+        cerr << patterns[i].label << " " << patterns[i].hashValue << "_";
         for(int j=0;j<patterns[i].size();j++){
-            cerr << patterns[i].tokens[j];
+            cerr <<patterns[i].tokens[j]<< (j==(patterns[i].size()-1)?"":" ");
         }
         cerr << " " << patterns[i].size() << " " << patterns[i].currentFreq<< " " << patterns[i].probability;
-        cerr << " " << patterns[i].quality << endl;
+        cerr << " " << patterns[i].quality <<" " << patterns[i].not_filtered_out << endl;
     }
+    int count=0;
+    set<vector<TOKEN_ID_TYPE>> filtered_phrases_ById=FilteredPhrases::loadPhrasesById();
+    for(vector<TOKEN_ID_TYPE> phraseById: filtered_phrases_ById){
+        if(filtered_phrases_ById.count(phraseById)>0){
+            count++;
+        }
+    }
+    cerr << count<<endl;
+    patterns=FilteredPhrases::filter_patterns(filtered_phrases_ById);
+    cerr << patterns.size()<<endl;
 
     sort(patterns.begin(), patterns.end(), byQuality);
 

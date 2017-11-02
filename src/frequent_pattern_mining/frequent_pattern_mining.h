@@ -15,7 +15,8 @@ namespace FrequentPatternMining
         double probability, quality;
         ULL hashValue;
         int currentFreq;
-        
+        bool not_filtered_out=false;//modified only if the pattern appeared in filtered_phrases.txt
+
 
         void dump(FILE* out) {
             Binary::write(out, currentFreq);
@@ -96,6 +97,19 @@ namespace FrequentPatternMining
             }
             cerr << endl;
         }
+
+        inline bool ifEqualByTokens(vector<TOKEN_ID_TYPE> tokensToCheck){
+            if(tokensToCheck.size()==tokens.size()){
+                for(int i=0;i<tokensToCheck.size();i++){
+                    if(tokensToCheck[i]!=tokens[i]){
+                        return false;
+                    }
+                }
+                //return true, if all the elements are checked to be equal
+                return true;
+            }
+            return false;
+        }
     };
 
 // === global variables ===
@@ -105,6 +119,17 @@ namespace FrequentPatternMining
     unordered_map<ULL, PATTERN_ID_TYPE> pattern2id;
 
 // ===
+    int whichPattern(vector<TOKEN_ID_TYPE> tokensToCheck) {
+        int result=-1;
+        for(int i=0;i<patterns.size();i++){
+            if(patterns[i].ifEqualByTokens(tokensToCheck)== true){
+                result=i;
+                return result;
+            }
+        }
+        return -1;
+    }
+
 
     bool isPrime(ULL x) {
         for (ULL y = 2; y * y <= x; ++ y) {
