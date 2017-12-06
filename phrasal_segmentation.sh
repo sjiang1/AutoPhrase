@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 SEGMENTATION_MODEL=results/segmentation.model
 #TEXT_TO_SEG=${TEXT_TO_SEG:-data/EN/DBLP.5K.txt}
-TEXT_TO_SEG=${TEXT_TO_SEG:-data/20newsgroups.txt} #huangweijing
+#TEXT_TO_SEG=${TEXT_TO_SEG:-data/20newsgroups.txt} #huangweijing
+TEXT_TO_SEG=$1
 HIGHLIGHT_MULTI=0.5
 HIGHLIGHT_SINGLE=0.8
 ENABLE_POS_TAGGING=1
@@ -62,13 +63,17 @@ if [ $ENABLE_POS_TAGGING -eq 1 ]; then
         --thread $THREAD \
         --model $SEGMENTATION_MODEL \
 		--highlight-multi $HIGHLIGHT_MULTI \
-		--highlight-single $HIGHLIGHT_SINGLE
+		--highlight-single $HIGHLIGHT_SINGLE \
+        --filtered_phrases results/filtered_phrases.txt \
+        --token_mapping tmp/token_mapping.txt
 else
 	time ./bin/segphrase_segment \
         --thread $THREAD \
         --model $SEGMENTATION_MODEL \
 		--highlight-multi $HIGHLIGHT_MULTI \
-		--highlight-single $HIGHLIGHT_SINGLE
+		--highlight-single $HIGHLIGHT_SINGLE \
+        --filtered_phrases results/filtered_phrases.txt \
+        --token_mapping tmp/token_mapping.txt
 fi
 
 ### END Segphrasing ###

@@ -53,6 +53,8 @@ double SEGMENT_MULTI_WORD_QUALITY_THRESHOLD = 0.5;
 double SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD = 0.8;
 const string TEXT_TO_SEG_FILE = "tmp/tokenized_text_to_seg.txt";
 const string TEXT_TO_SEG_POS_TAGS_FILE = "tmp/pos_tags_tokenized_text_to_seg.txt";
+string FILTERED_PHRASES = "";//such as results/filtered_phrases.txt
+string TOKEN_MAPPING="";//such as tmp/token_mapping.txt
 
 
 #endif

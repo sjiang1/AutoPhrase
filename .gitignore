@@ -1,0 +1,16 @@
+.cproject
+.idea/
+.project
+.ropeproject/
+.settings/
+AutoPhrase.cbp
+CMakeCache.txt
+CMakeFiles/
+bin/
+cmake_install.cmake
+data/DBLP.txt
+data/DBLP_10000.txt
+models/
+results/
+tmp/
+Makefile

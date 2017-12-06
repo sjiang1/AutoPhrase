@@ -4,11 +4,12 @@
 #RAW_TRAIN=${RAW_TRAIN:- data/DBLP_10000.txt}
 #RAW_TRAIN=${RAW_TRAIN:- data/huang_try.txt}
 #RAW_TRAIN=${RAW_TRAIN:- data/raw20newsgroups.txt}
-RAW_TRAIN=${RAW_TRAIN:- data/20newsgroups.txt}
-# When FIRST_RUN is set to 1, AutoPhrase will run all preprocessing. 
+#RAW_TRAIN=${RAW_TRAIN:- data/20newsgroups.txt}
+RAW_TRAIN=$1
+# When FIRST_RUN is set to 1, AutoPhrase will run all preprocessing.
 # Otherwise, AutoPhrase directly starts from the current preprocessed data in the tmp/ folder.
 FIRST_RUN=${FIRST_RUN:- 1}
-# When ENABLE_POS_TAGGING is set to 1, AutoPhrase will utilize the POS tagging in the phrase mining. 
+# When ENABLE_POS_TAGGING is set to 1, AutoPhrase will utilize the POS tagging in the phrase mining.
 # Otherwise, a simple length penalty mode as the same as SegPhrase will be used.
 ENABLE_POS_TAGGING=${ENABLE_POS_TAGGING:- 1}
 echo "ENABLE_POS_TAGGING=$ENABLE_POS_TAGGING"
@@ -72,7 +73,7 @@ if [ $FIRST_RUN -eq 1 ]; then
     echo -ne "Current step: Tokenizing wikipedia phrases...\033[0K\n"
     java $TOKENIZER -m test -i $ALL_WIKI_ENTITIES -o $TOKENIZED_ALL -t $TOKEN_MAPPING -c N -thread $THREAD
     java $TOKENIZER -m test -i $QUALITY_WIKI_ENTITIES -o $TOKENIZED_QUALITY -t $TOKEN_MAPPING -c N -thread $THREAD
-fi  
+fi
 ### END Tokenization ###
 
 if [[ $RAW_LABEL_FILE = *[!\ ]* ]]; then
@@ -94,6 +95,7 @@ fi
 ### END Part-Of-Speech Tagging ###
 
 echo ${green}===AutoPhrasing===${reset}
+echo "THREAD=${THREAD}, LABEL_METHOD=${LABEL_METHOD}, LABEL_FILE=${LABEL_FILE}, MAX_POSITIVES=${MAX_POSITIVES}, MIN_SUP=${MIN_SUP}"
 
 if [ $ENABLE_POS_TAGGING -eq 1 ]; then
     time ./bin/segphrase_train \

@@ -83,22 +83,22 @@ int main(int argc, char* argv[])
     Dump::loadSegmentationModel(SEGMENTATION_MODEL);
 
     //huangweijing
-    vector<TOKEN_ID_TYPE> tokens_to_check;
-    TOKEN_ID_TYPE token1=22324;
-    TOKEN_ID_TYPE token2=12633;
-    tokens_to_check.push_back(token1);
-    tokens_to_check.push_back(token2);
-    int pattern_id=FrequentPatternMining::whichPattern(tokens_to_check);
-    cerr << pattern_id << " found by whichPattern()" <<endl;
-    int i=pattern_id;
-    {
-        cerr << patterns[i].label << " " << patterns[i].hashValue << "_";
-        for(int j=0;j<patterns[i].size();j++){
-            cerr <<patterns[i].tokens[j]<< (j==(patterns[i].size()-1)?"":" ");
-        }
-        cerr << " " << patterns[i].size() << " " << patterns[i].currentFreq<< " " << patterns[i].probability;
-        cerr << " " << patterns[i].quality <<" " << patterns[i].not_filtered_out << endl;
-    }
+//    vector<TOKEN_ID_TYPE> tokens_to_check;
+//    TOKEN_ID_TYPE token1=22324;
+//    TOKEN_ID_TYPE token2=12633;
+//    tokens_to_check.push_back(token1);
+//    tokens_to_check.push_back(token2);
+//    int pattern_id=FrequentPatternMining::whichPattern(tokens_to_check);
+//    cerr << pattern_id << " found by whichPattern()" <<endl;
+//    int i=pattern_id;
+//    {
+//        cerr << patterns[i].label << " " << patterns[i].hashValue << "_";
+//        for(int j=0;j<patterns[i].size();j++){
+//            cerr <<patterns[i].tokens[j]<< (j==(patterns[i].size()-1)?"":" ");
+//        }
+//        cerr << " " << patterns[i].size() << " " << patterns[i].currentFreq<< " " << patterns[i].probability;
+//        cerr << " " << patterns[i].quality <<" " << patterns[i].not_filtered_out << endl;
+//    }
     int count=0;
     set<vector<TOKEN_ID_TYPE>> filtered_phrases_ById=FilteredPhrases::loadPhrasesById();
     for(vector<TOKEN_ID_TYPE> phraseById: filtered_phrases_ById){

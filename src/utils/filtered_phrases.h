@@ -23,7 +23,7 @@ namespace FilteredPhrases {
 
     vector<vector<string>> readFilteredPhrases() {
         vector<vector<string>> phrases;
-        FILE *in = tryOpen("results/filtered_phrases.txt", "r");
+        FILE *in = tryOpen(FILTERED_PHRASES, "r");
         while (getLine(in)) {
             vector<string> phrase;
             stringstream sin(line);
@@ -40,7 +40,7 @@ namespace FilteredPhrases {
 
     map<string, TOKEN_ID_TYPE> readTokenMapping() {
         map<string, TOKEN_ID_TYPE> tokenMapStr2Id;
-        FILE *in = tryOpen("tmp/token_mapping.txt", "r");
+        FILE *in = tryOpen(TOKEN_MAPPING, "r");
         while (getLine(in)) {
             stringstream sin(line);
             string temp;

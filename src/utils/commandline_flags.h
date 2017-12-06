@@ -43,7 +43,11 @@ void parseCommandFlags(int argc, char* argv[])
             fromString(argv[++ i], SEGMENT_MULTI_WORD_QUALITY_THRESHOLD);
         } else if (!strcmp(argv[i], "--highlight-single")) {
             fromString(argv[++ i], SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD);
-        } else {
+        } else if (!strcmp(argv[i], "--filtered_phrases")){
+            fromString(argv[++ i], FILTERED_PHRASES);
+        } else if(!strcmp(argv[i],"--token_mapping")){
+            fromString(argv[++ i], TOKEN_MAPPING);
+        } else{
             fprintf(stderr, "[Warning] Unknown Parameter: %s\n", argv[i]);
         }
     }
