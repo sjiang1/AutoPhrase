@@ -13,4 +13,3 @@ data/DBLP_10000.txt
 models/
 results/
 tmp/
-Makefile

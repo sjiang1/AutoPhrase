@@ -31,10 +31,9 @@ reset=`tput sgr0`
 echo ${green}===Compilation===${reset}
 
 #add by huangweijing
-#COMPILE=${COMPILE:- 1}
-#if [ $COMPILE -eq 1 ]; then
-#    bash compile.sh
-#fi
+if [ ! -e bin/segphrase_train ]; then
+    bash compile.sh
+fi
 
 mkdir -p tmp
 mkdir -p results
