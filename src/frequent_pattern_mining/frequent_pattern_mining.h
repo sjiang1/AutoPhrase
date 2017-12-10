@@ -118,16 +118,33 @@ namespace FrequentPatternMining
     vector<vector<TOTAL_TOKENS_TYPE>> id2ends;
     unordered_map<ULL, PATTERN_ID_TYPE> pattern2id;
 
-// ===
-    int whichPattern(vector<TOKEN_ID_TYPE> tokensToCheck) {
-        int result=-1;
-        for(int i=0;i<patterns.size();i++){
-            if(patterns[i].ifEqualByTokens(tokensToCheck)== true){
-                result=i;
-                return result;
-            }
+    unordered_map<string,Pattern> map_patterns;
+
+    string tokensToString(vector<TOKEN_ID_TYPE> tokens){
+        string s;
+        for(TOKEN_ID_TYPE token: tokens){
+            s.push_back(token);
+            s.push_back(' ');
         }
-        return -1;
+        return s;
+    }
+
+    void init_set_patterns(){
+        for(Pattern pattern : patterns){
+            map_patterns.insert({tokensToString(pattern.tokens),pattern});
+        }
+    }
+
+    bool exists(vector<TOKEN_ID_TYPE> tokensToCheck) {
+        if(map_patterns.count(tokensToString(tokensToCheck))>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    Pattern findPattern(vector<TOKEN_ID_TYPE> tokensToCheck){
+        return map_patterns[tokensToString(tokensToCheck)];
     }
 
 

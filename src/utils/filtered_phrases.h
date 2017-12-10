@@ -12,12 +12,14 @@ namespace FilteredPhrases {
     //construct new_patterns by filtedred phrases
     vector<FrequentPatternMining::Pattern> filter_patterns(set<vector<TOKEN_ID_TYPE>> phrasesById){
         vector<FrequentPatternMining::Pattern> new_patterns;
+        FrequentPatternMining::init_set_patterns();
+        int i=0;
         for(vector<TOKEN_ID_TYPE> phraseById: phrasesById){
-            int pattern_id=FrequentPatternMining::whichPattern(phraseById);
-            if(pattern_id>0){
-                new_patterns.push_back(FrequentPatternMining::patterns[pattern_id]);
+            if(FrequentPatternMining::exists(phraseById)== true){
+                new_patterns.push_back(FrequentPatternMining::findPattern(phraseById));
             }
         }
+
         return new_patterns;
     }
 
