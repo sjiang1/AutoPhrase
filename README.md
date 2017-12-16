@@ -12,112 +12,58 @@ Please cite the following two papers if you are using our tools. Thanks!
     2015 ACM SIGMOD Int. Conf. on Management of Data (SIGMOD'15), Melbourne,
     Australia, May 2015. (\* equally contributed,
     [slides](http://jialu.cs.illinois.edu/paper/sigmod2015-liu-slides.pdf))
+    
+## Modification made by this fork.
+The originial version is [shangjingbo1226/AutoPhrase](https://github.com/shangjingbo1226/AutoPhrase/). 
 
-## New Features
-(compared to SegPhrase)
+This fork version is mainly desinged for [SparseTP](https://github.com/waleking/SparseTP), a topic modeling tool for phrases, which is going to be published in the 29th IEEE International Conference on Tools with Artifical Intelligence (ICTAI'17).  
 
-*   **Minimized Human Effort**. We develop a robust positive-only distant training method to estimate the phrase quality by leveraging exsiting general knowledge bases.
-*   **Support Multiple Languages: English, Spanish, and Chinese**. The language
-    in the input will be automatically detected.
-*   **High Accuracy**. We propose a POS-guided phrasal segmentation model incorporating POS tags when POS tagger is available. Meanwhile, the new framework is able to extract single-word quality phrases.
-*   **High Efficiency**. A better indexing and an almost lock-free parallelization are implemented, which lead to both running time speedup and memory saving.
-
-## Related GitHub Repositories
-
-*   [SegPhrase](https://github.com/shangjingbo1226/SegPhrase)
-*	[SegPhrase-MultiLingual](https://github.com/remenberl/SegPhrase-MultiLingual)
-
-## Requirements
-
-Linux or MacOS with g++ and Java installed.
-
-Ubuntu:
-
-*   g++ 4.8 `$ sudo apt-get install g++-4.8`
-*   Java 8 `$ sudo apt-get install openjdk-8-jre`
-
-MacOS:
-
-*   g++ 6 `$ brew install gcc6`
-*   Java 8 `$ brew update; brew tap caskroom/cask; brew install Caskroom/cask/java`
-
-## Default Run
-
-#### Phrase Mining Step
-```
-$ ./auto_phrase.sh
-```
-
-The default run will download an English corpus from the server of our data
-mining group and run AutoPhrase to get 3 ranked lists of phrases under the
-results/ folder 
-* results/AutoPhrase.txt: the unified ranked list for both single-word phrases and multi-word phrases. 
-* results/AutoPhrase_multi-words.txt: the sub-ranked list for multi-word phrases only. 
-* results/AutoPhrase_single-word.txt: the sub-ranked list for single-word phrases only.
+*	**Efficient Topic Modeling on Phrases via Sparsity**, Weijing Huang, Wei Chen, Tengjiao Wang and Shibo Tao, Proceedings of the 29th IEEE International Conference on Tools with Artifical Intelligence (ICTAI'17), Boston, USA, Nov 2017. ([slides](https://github.com/waleking/SparseTP/blob/master/ICTAI_presentation.pdf))
 
 
-#### Phrasal Segmentation
-We also provide an auxiliary function to highlight the phrases in context based on our phrasal segmentation model. There are two thresholds you can tune in the top of the script. The model can also handle unknown tokens (i.e., tokens which are not occurred in the phrase mining step's corpus).
-```
-$ ./phrasal_segmentation.sh
-```
-The segmentation results will be put under the results/ folder as well ("results/segmentation.txt"). The highlighted phrases will be enclosed by the phrase tags.
+The modification of this fork is mainly in three folds. 
 
-## Incorporate Domain-Specific Knowledge Bases
+1.	Provide an portal [runAutoPhrase.sh](https://github.com/waleking/AutoPhrase/blob/master/runAutoPhrase.sh) to process the raw input file to get the final result file `input_forTopicModel.txt`, which is used as the input of [SparseTP](https://github.com/waleking/SparseTP).
 
-If domain-specific knowledge bases are available, such as MeSH terms, there are two ways to incorporate them.
-* (**recommended**) Append your known quality phrases to the file "data/EN/wiki_quality.txt".
-* Replace the file "data/EN/wiki_quality.txt" by your known quality phrases.
+2. We add [filter.py](https://github.com/waleking/AutoPhrase/blob/master/filter.py) to remove the low quality phrases (e.g., score<0.5), and get high quality phrases file `results/filtered_phrases.txt`. And with the high quality phrases, we update [src/segment.cpp](https://github.com/waleking/AutoPhrase/blob/master/src/segment.cpp) to segment the raw input file. Finaly, we add [prepare_for_topicmodeling.py](https://github.com/waleking/AutoPhrase/blob/master/prepare_for_topicmodeling.py) to get the result file `input_forTopicModel.txt `, with the foramt `word_1,word_2,word_3,...,word_n,phrases_1,...,phrases_m\n` in each line representing a single document in a corpus.
 
-## Handle Other Languages
+3. We add several running examples to provide a **"one click" quick way** to know how to use this tool. The running example 1 is designed to process the dataset [20newsgroups](http://qwone.com/~jason/20Newsgroups/); The running example 2 is designed to process the Wikipedia articles under the [Mathematics category](https://en.wikipedia.org/wiki/Category:Mathematics) (the json data are available at [Dropbox](https://www.dropbox.com/s/816k7dkkub6kd0f/mathematics.json.gz)); The running example 3 and 4 are designed for [Chemistry](https://en.wikipedia.org/wiki/Category:Chemistry) ([availabe json data](https://www.dropbox.com/s/89f9gvrg2en0f8i/Chemistry.json.gz)) and [Argentina](https://en.wikipedia.org/wiki/Category:Argentina) ([available json data](https://www.dropbox.com/s/buo26zn074gnt5y/Argentina.json.gz)).
 
-#### Tokenizer and POS tagger
-In fact, our tokenizer supports many different languages, including Arabics (AR), German (DE), English (EN), Spanish (ES), French (FR), Italian (IT), Japanese (JA), Portuguese (PT), Russian (RU), and Chinese (CN). If the language detection is wrong, you can also manually specify the language by modify the TOKENIZER command in the bash script auto_phrase.sh using the two-letter code for that language. For example, the following one forces the language to be English.
-```
-TOKENIZER="-cp .:tools/tokenizer/lib/*:tools/tokenizer/resources/:tools/tokenizer/build/ Tokenizer -l EN"
-```
+### Usage
+bash runAutoPhrase.sh $input_file
 
-We also provide a default tokenizer together with a dummy POS tagger in the tools/tokenizer.
-It uses the StandardTokenizer in Lucene, and always assign a tag UNKNOWN to each token.
-To enable this feature, please add the "-l OTHER" to the TOKENIZER command in the bash script auto_phrase.sh.
-```
-TOKENIZER="-cp .:tools/tokenizer/lib/*:tools/tokenizer/resources/:tools/tokenizer/build/ Tokenizer -l OTHER"
-```
+`$input_file` is the path of the input file, which includes the whole corpus with each line representing a single file in a corpus.
 
-If you want to incorporate your own tokenizer and/or POS tagger, please create a new class extending SpecialTagger in the tools/tokenizer. You may refer to StandardTagger as an example.
+The result file will be restored in `results/input_forTopicModel.txt`.
 
-#### stopwords.txt
+### Running Examples
+1, `bash runningExample1.sh`
 
-You may try to search online or create your own list.
+After running on the 20newsgroups dataset, the result file can be found as results/input_forTopicModel.txt. 
 
-#### wiki_all.txt and wiki_quality.txt
+Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/2ifzu84j56knvsn/20newsgroups.txt.gz). 
 
-Meanwhile, you have to add two lists of quality phrases in the data/OTHER/wiki_quality.txt and data/OTHER/wiki_all.txt. 
-The quality of phrases in wiki_quality should be very confident, while wiki_all, as its superset, could be a little noisy. For more details, please refer to the [tools/wiki_enities](https://github.com/shangjingbo1226/AutoPhrase/tree/master/tools/wiki_entities).
+Take one line in the result file as an example, it represents the document after extracting phrases: alt,introduction,april,version,introduction,atheism,mathew,...,read,article,mathew,version,pgp signed message,frequently asked questions,faq files,strong atheism,weak atheism,strong atheism,god exists,point of view,weak atheism,...,god exists,peer pressure,pgp signature,pgp signature
 
-## Docker
 
-###Default Run
+2, `bash runningExample2.sh`
 
-```
-sudo docker run -v $PWD/results:/autophrase/results -it \
-    -e FIRST_RUN=1 -e ENABLE_POS_TAGGING=1 \
-    -e MIN_SUP=30 -e THREAD=10 \
-    remenberl/autophrase
+After running on the Mathematics Wiki dataset, the result file can be found as results/input_forTopicModel.txt. 
 
-./autophrase.sh
-```
+Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/gbhhe0xogdmwo8x/mathematics.txt.gz).
 
-The results will be available in the results folder.
+Take one line in the result file as an example, it represents the document after extracting phrases: kohli,scientist,lab,cambridge,majority,research,field,machine,learning,vision,contributions,game,theory,psychometrics,picture,josh,semantic,paint,kinect,fusion,voxel,crf,inference,microsoft research,discrete algorithms,programming language,higher order,graphical models
 
-###User Specified Input
-Assuming the path to input file is ./data/input.txt.
-```
-sudo docker run -v $PWD/data:/autophrase/data -v $PWD/results:/autophrase/results -it \
-    -e RAW_TRAIN=data/input.txt \
-    -e FIRST_RUN=1 -e ENABLE_POS_TAGGING=1 \
-    -e MIN_SUP=30 -e THREAD=10 \
-    remenberl/autophrase
 
-./autophrase.sh
-```
+3, `bash runningExample3.sh`
+After running on the Chemistry Wiki dataset, the result file can be found as results/input_forTopicModel.txt. 
+
+Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/kv4a0xutepdn8ws/chemistry.txt.gz).
+
+4, `bash runningExample4.sh`
+
+After running on the Argentina Wiki dataset, the result file can be found as results/input_forTopicModel.txt. 
+
+Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/fdx2z99xc0aepce/argentina.txt.gz).
+
+
