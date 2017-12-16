@@ -13,7 +13,7 @@ Please cite the following two papers if you are using our tools. Thanks!
     Australia, May 2015. (\* equally contributed,
     [slides](http://jialu.cs.illinois.edu/paper/sigmod2015-liu-slides.pdf))
     
-## Modification made by this fork.
+## Modification made by waleking's fork.
 The originial version is [shangjingbo1226/AutoPhrase](https://github.com/shangjingbo1226/AutoPhrase/). 
 
 This fork version is mainly desinged for [SparseTP](https://github.com/waleking/SparseTP), a topic modeling tool for phrases, which is going to be published in the 29th IEEE International Conference on Tools with Artifical Intelligence (ICTAI'17).  
