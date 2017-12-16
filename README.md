@@ -43,7 +43,7 @@ After running on the 20newsgroups dataset, the result file can be found as resul
 
 Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/2ifzu84j56knvsn/20newsgroups.txt.gz). 
 
-Take one line in the result file as an example, it represents the document after extracting phrases: alt,introduction,april,version,introduction,atheism,mathew,...,read,article,mathew,version,pgp signed message,frequently asked questions,faq files,strong atheism,weak atheism,strong atheism,god exists,point of view,weak atheism,...,god exists,peer pressure,pgp signature,pgp signature
+Take one line in the result file as an example, it represents the document after extracting phrases: *alt,introduction,april,version,introduction,atheism,mathew,...,read,article,mathew,version,pgp signed message,frequently asked questions,faq files,strong atheism,weak atheism,strong atheism,god exists,point of view,weak atheism,...,god exists,peer pressure,pgp signature,pgp signature*
 
 
 2, `bash runningExample2.sh`
@@ -52,10 +52,11 @@ After running on the Mathematics Wiki dataset, the result file can be found as r
 
 Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/gbhhe0xogdmwo8x/mathematics.txt.gz).
 
-Take one line in the result file as an example, it represents the document after extracting phrases: kohli,scientist,lab,cambridge,majority,research,field,machine,learning,vision,contributions,game,theory,psychometrics,picture,josh,semantic,paint,kinect,fusion,voxel,crf,inference,microsoft research,discrete algorithms,programming language,higher order,graphical models
+Take one line in the result file as an example, it represents the document after extracting phrases: *kohli,scientist,lab,cambridge,majority,research,field,machine,learning,vision,contributions,game,theory,psychometrics,picture,josh,semantic,paint,kinect,fusion,voxel,crf,inference,microsoft research,discrete algorithms,programming language,higher order,graphical models*
 
 
 3, `bash runningExample3.sh`
+
 After running on the Chemistry Wiki dataset, the result file can be found as results/input_forTopicModel.txt. 
 
 Or for a quick view without running, the result can be downloaded from [Dropbox](https://www.dropbox.com/s/kv4a0xutepdn8ws/chemistry.txt.gz).
