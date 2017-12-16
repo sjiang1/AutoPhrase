@@ -2,7 +2,7 @@
 
 ## Publications
 
-Please cite the following two papers if you are using our tools. Thanks!
+Please cite the following two papers if you are using this tool. Thanks!
 
 *   Jingbo Shang, Jialu Liu, Meng Jiang, Xiang Ren, Clare R Voss, Jiawei Han, "**Automated Phrase Mining from Massive Text Corpora**", submitted to SIGKDD 2017, under review. [arXiv:1702.04457](https://arxiv.org/abs/1702.04457) [cs.CL]
 
