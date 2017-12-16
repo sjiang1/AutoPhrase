@@ -69,7 +69,7 @@ Or for a quick view without running, the result can be downloaded from [Dropbox]
 
 ### Performance
 
-We test runAutoPhrase.sh on a signle 4-Core 3.4GHz CPU, 24GB RAM machine. To see what will happen for processing a very big input file, we take [whole Wikipedia pages](https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2) as an input. There are 5,738,260 articles, 2,036,099,636 tokens, 10.67GB. In order to fit it with our limit memory, we split this big file into 5 smaller ones, each one with about 2.1GB size. In this way, we run AutoPhrase sequencely on these 5 splitted files, in which each 2.1GB file costs 24GB memory. After 12.5 hours, we got the processed result for Wikipedia pages.
+We test runAutoPhrase.sh on a signle 4-Core 3.4GHz CPU, 24GB RAM machine. To see what will happen for processing a very big input file, we take [whole Wikipedia pages](https://dumps.wikimedia.org/enwiki/latest/enwiki-latest-pages-articles.xml.bz2) as an input. There are 5,738,260 articles, 2,036,099,636 tokens, 10.67GB. In order to fit it in our limit memory, we split this big file into 5 smaller ones, each one with about 2.1GB size. In this way, we run AutoPhrase sequencely on these 5 splitted files, in which each 2.1GB file costs 24GB memory. After 12.5 hours, we got the processed result for Wikipedia pages.
 
 In short, we summarize the performance as the following table.
 
