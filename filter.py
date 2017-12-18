@@ -1,3 +1,4 @@
+import re
 
 def checkNum(word):
     for s in word:
@@ -15,6 +16,7 @@ def checkStopWord(word):
 fWriter=open("results/filtered_phrases.txt","w")
 
 with open("results/AutoPhrase_multi-words.txt","r") as f:
+    pattern="^([a-zA-Z]{2,}\s+[a-zA-Z]{2,}(?:\s+[a-zA-Z]{2,})*)$"
     for line in f.readlines():
         line=line.strip()
         splitted=line.split("\t")
@@ -23,6 +25,8 @@ with open("results/AutoPhrase_multi-words.txt","r") as f:
         if(score<0.5):
             continue
         phrase_words=phrase_part.split(" ")
+        if(re.match(pattern, phrase_part) is None):
+	    continue
         if(len(phrase_words)>4):
             continue
         flag=[len(word)<=2 for word in phrase_words]
