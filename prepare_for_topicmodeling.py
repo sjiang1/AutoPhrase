@@ -65,7 +65,7 @@ if __name__=="__main__":
             sentences_no_punc=re.sub("\s+"," ",sentences_no_punc)
             #remove stopwords and short words whose length is <=2.
             document_without_stopwords=",".join([word for word in sentences_no_punc.split() if (word not in stopwords and len(word)>2)])
-            if(len(matchedPhrases)>1):
+            if(len(matchedPhrases)>=1):
                 phrases=",".join(matchedPhrases)
                 #add extracted phrases
                 document_without_stopwords=document_without_stopwords+","+phrases
