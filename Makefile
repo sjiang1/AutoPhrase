@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = -std=c++11 -Wall -g -O0 -msse2  -fopenmp  -I..
+CXXFLAGS = -std=c++11 -Wall -g -O0 -msse2  -fopenmp  -I..
 
 BIN = ./bin/segphrase_train ./bin/segphrase_segment
 .PHONY: clean all
@@ -14,9 +14,9 @@ all: ./bin $(BIN)
 
 LDFLAGS= -pthread -lm -Wno-unused-result -Wno-sign-compare -Wno-unused-variable -Wno-parentheses -Wno-format
 $(BIN) :
-	$(CXX) $(CFLAGS) $(LDFLAGS) -o $@ $(filter %.cpp %.o %.c, $^)
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $(filter %.cpp %.o %.c, $^)
 $(OBJ) :
-	$(CXX) -c $(CFLAGS) -o $@ $(firstword $(filter %.cpp %.c, $^) )
+	$(CXX) -c $(CXXFLAGS) -o $@ $(firstword $(filter %.cpp %.c, $^) )
 
 clean :
 	rm -rf bin
