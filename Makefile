@@ -1,5 +1,5 @@
 CXX = g++
-CFLAGS = -std=c++11 -Wall -O3 -msse2  -fopenmp  -I..
+CFLAGS = -std=c++11 -Wall -g -O0 -msse2  -fopenmp  -I..
 
 BIN = ./bin/segphrase_train ./bin/segphrase_segment
 .PHONY: clean all
