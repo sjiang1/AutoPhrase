@@ -20,3 +20,4 @@ $(OBJ) :
 
 clean :
 	rm -rf bin
+
