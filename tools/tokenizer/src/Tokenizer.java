@@ -625,7 +625,7 @@ public class Tokenizer {
 
                             //System.err.println("tokenID = " + tokenID);
                             ++ loadCount;
-                            if (loadCount > 100) {
+                            if (loadCount > 300000000) {
                                 System.err.println("[Fatal Error] Load Limit Exceeded! You may want to modify the load limit in the Tokenizer.java");
                                 writer.close();
                                 System.exit(-1);
