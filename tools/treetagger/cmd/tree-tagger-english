@@ -2,20 +2,20 @@
 
 # Set these paths appropriately
 
-BIN=./bin
-CMD=./cmd
-LIB=./lib
+BIN=/home/docio/git/AutoPhrase/tools/treetagger/bin
+CMD=/home/docio/git/AutoPhrase/tools/treetagger/cmd
+LIB=/home/docio/git/AutoPhrase/tools/treetagger/lib
 
-OPTIONS="-quiet"
+OPTIONS="-token -lemma -sgml"
 
 TOKENIZER=${CMD}/utf8-tokenize.perl
 TAGGER=${BIN}/tree-tagger
 ABBR_LIST=${LIB}/english-abbreviations
 PARFILE=${LIB}/english-utf8.par
 
-#$TOKENIZER -e -a $ABBR_LIST $* |
+$TOKENIZER -e -a $ABBR_LIST $* |
 # remove empty lines
-#grep -v '^$' |
+grep -v '^$' |
 # tagging
-$TAGGER $OPTIONS $PARFILE
-#| perl -pe 's/\tV[BDHV]/\tVB/;s/\tIN\/that/\tIN/;' 
+$TAGGER $OPTIONS $PARFILE | 
+perl -pe 's/\tV[BDHV]/\tVB/;s/\tIN\/that/\tIN/;'

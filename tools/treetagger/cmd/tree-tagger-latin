@@ -2,13 +2,13 @@
 
 # Set these paths appropriately
 
-BIN=./bin
-CMD=./cmd
-LIB=./lib
+BIN=/home/docio/git/AutoPhrase/tools/treetagger/bin
+CMD=/home/docio/git/AutoPhrase/tools/treetagger/cmd
+LIB=/home/docio/git/AutoPhrase/tools/treetagger/lib
 
 OPTIONS="-token -lemma -sgml"
 
-TOKENIZER=${CMD}/tokenize.pl
+TOKENIZER=${CMD}/utf8-tokenize.perl
 MWL=${CMD}/mwl-lookup.perl
 TAGGER=${BIN}/tree-tagger
 ABBR_LIST=${LIB}/latin-abbreviations

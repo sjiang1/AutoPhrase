@@ -2,16 +2,16 @@
 
 # Set these paths appropriately
 
-BIN=./bin
-CMD=./cmd
-LIB=./lib
+BIN=/home/docio/git/AutoPhrase/tools/treetagger/bin
+CMD=/home/docio/git/AutoPhrase/tools/treetagger/cmd
+LIB=/home/docio/git/AutoPhrase/tools/treetagger/lib
 
-OPTIONS="-quiet"
+OPTIONS="-token -lemma -sgml"
 
 TOKENIZER=${CMD}/utf8-tokenize.perl
 TAGGER=${BIN}/tree-tagger
 PARFILE=${LIB}/russian-utf8.par
 
 # do tokenization
-#$TOKENIZER $* |
+$TOKENIZER $* |
 $TAGGER $OPTIONS $PARFILE

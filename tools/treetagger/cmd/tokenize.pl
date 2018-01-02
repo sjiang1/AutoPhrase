@@ -36,16 +36,16 @@ my $FClitic;
 
 if (defined($opt_e)) {
     # English
-    $FClitic = "['´](s|re|ve|d|m|em|ll)|n['´]t";
+    $FClitic = "'(s|re|ve|d|m|em|ll)|n't";
 }
 if (defined($opt_i)) {
     # Italian
-    $PClitic = "(?:[dD][ae]ll|[nN]ell|[Aa]ll|[lLDd]|[Ss]ull|[Qq]uest|[Uu]n|[Ss]enz|[Tt]utt|[Cc]|[Ss])['´]";
+    $PClitic = "(?:d[ae]ll|nell|all|[ld]|sull|quest|un|senz|tutt|c|s)'";
 }
 if (defined($opt_f)) {
     # French
-    $PClitic = "(?:[dcjlmnstDCJLNMST]|[Qq]u|[Jj]usqu|[Ll]orsqu)['´]";
-    $FClitic = "-t-elles?|-t-ils?|-t-on|-ce|-elles?|-ils?|-je|-la|-les?|-leur|-lui|-mmes?|-m['´]|-moi|-nous|-on|-toi|-tu|-t['´]|-vous|-en|-y|-ci|-là";
+    $PClitic = "(?:[dcjlmnst]|qu|jusqu|lorsqu|quoiqu|puisqu)'";
+    $FClitic = "-t-elles?|-t-ils?|-t-on|-ce|-elles?|-ils?|-je|-la|-les?|-leur|-lui|-mêmes?|-m'|-moi|-nous|-on|-toi|-tu|-t'|-vous|-en|-y|-ci|-là";
 }
 if (defined($opt_z)) {
     # Galician
@@ -204,7 +204,7 @@ while (<>) {
 		    print $1,"\n";
 		}
 		if (defined $PClitic) {
-		    while (s/^($PClitic)(.)/$2/) {
+		    while (s/^($PClitic)(.)/$2/i) {
 			print $1,"\n";
 		    }
 		}
@@ -213,7 +213,7 @@ while (<>) {
 		    $suffix = "$2\n$suffix";
 		}
 		if (defined $FClitic) {
-		    while (s/(.)($FClitic)$/$1/) {
+		    while (s/(.)($FClitic)$/$1/i) {
 			$suffix = "$2\n$suffix";
 		    }
 		}

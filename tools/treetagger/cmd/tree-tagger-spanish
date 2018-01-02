@@ -2,11 +2,11 @@
 
 # Set these paths appropriately
 
-BIN=./bin
-CMD=./cmd
-LIB=./lib
+BIN=/home/docio/git/AutoPhrase/tools/treetagger/bin
+CMD=/home/docio/git/AutoPhrase/tools/treetagger/cmd
+LIB=/home/docio/git/AutoPhrase/tools/treetagger/lib
 
-OPTIONS="-quiet"
+OPTIONS="-token -lemma -sgml"
 
 TOKENIZER=${CMD}/utf8-tokenize.perl
 MWL=${CMD}/mwl-lookup.perl
@@ -15,8 +15,8 @@ ABBR_LIST=${LIB}/spanish-abbreviations
 PARFILE=${LIB}/spanish-utf8.par
 MWLFILE=${LIB}/spanish-mwls-utf8
 
-#$TOKENIZER -a $ABBR_LIST $* |
+$TOKENIZER -a $ABBR_LIST $* |
 # recognition of MWLs
-#$MWL -f $MWLFILE 
+$MWL -f $MWLFILE |
 # tagging
 $TAGGER $OPTIONS $PARFILE

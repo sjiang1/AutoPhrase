@@ -2,11 +2,11 @@
 
 # Set these paths appropriately
 
-BIN=./bin
-CMD=./cmd
-LIB=./lib
+BIN=/home/docio/git/AutoPhrase/tools/treetagger/bin
+CMD=/home/docio/git/AutoPhrase/tools/treetagger/cmd
+LIB=/home/docio/git/AutoPhrase/tools/treetagger/lib
 
-OPTIONS="-pt-with-lemma -quiet"
+OPTIONS="-token -lemma -sgml -pt-with-lemma"
 
 TOKENIZER=${CMD}/utf8-tokenize.perl
 TAGGER=${BIN}/tree-tagger
@@ -15,7 +15,7 @@ PARFILE=${LIB}/german-utf8.par
 LEXFILE=${LIB}/german-lexicon-utf8.txt
 FILTER=${CMD}/filter-german-tags
 
-# $TOKENIZER -a $ABBR_LIST $* |
+$TOKENIZER -a $ABBR_LIST $* |
 # external lexicon lookup
 perl $CMD/lookup.perl $LEXFILE |
 # tagging

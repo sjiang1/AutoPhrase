@@ -17,16 +17,16 @@ use Getopt::Std;
 use utf8;
 use Encode;
 
-getopts('hgfeiza:r');
+getopts('chgfeipza:r');
 
 # Modify the following lines in order to adapt the tokenizer to other
 # types of text and/or languages
 
 # characters which have to be cut off at the beginning of a word
-my $PChar='[¿¡{\'\\`"‚„†‡‹‘’“”•–—›';
+my $PChar='[¿¡{\'\\`"‚„†‡‹‘’“”•–—›»«';
 
 # characters which have to be cut off at the end of a word
-my $FChar=']}\'\`\",;:\!\?\%‚„…†‡‰‹‘’“”•–—›';
+my $FChar=']}\'\`\",;:\!\?\%‚„…†‡‰‹‘’“”•–—›»«';
 
 # character sequences which have to be cut off at the beginning of a word
 my $PClitic='';
@@ -36,8 +36,8 @@ my $FClitic='';
 
 if (defined($opt_r)) {
     # Romanian
-    $PChar='[¿¡{\\`"‚„†‡‹‘’“”•–—›';
-    $FChar=']}\`\",;:\!\?\%‚„…†‡‰‹‘’“”•–—›';
+    $PChar='[¿¡{\\`"‚„†‡‹‘’“”•–—›»«';
+    $FChar=']}\`\",;:\!\?\%‚„…†‡‰‹‘’“”•–—›»«';
 }
 if (defined($opt_e)) {
     # English
@@ -45,16 +45,25 @@ if (defined($opt_e)) {
 }
 if (defined($opt_i)) {
     # Italian
-    $PClitic = "(?:[dD][ae]ll|[nN]ell|[Aa]ll|[lLDd]|[Ss]ull|[Qq]uest|[Uu]n|[Ss]enz|[Tt]utt|[Cc]|[Ss])['´’]";
+    $PClitic = "(?:d[ae]ll|nell|all|[ld]|sull|quest|un|senz|tutt|c|s)['´’]";
 }
 if (defined($opt_f)) {
     # French
-    $PClitic = "?:([dcjlmnstDCJLNMST]|[Qq]u|[Jj]usqu|[Ll]orsqu)['’´]";
-    $FClitic = "-t-elles?|-t-ils?|-t-on|-ce|-elles?|-ils?|-je|-la|-les?|-leur|-lui|-mmes?|-m['’´]|-moi|-nous|-on|-toi|-tu|-t['’´]|-vous|-en|-y|-ci|-là";
+    $PClitic = "(?:[dcjlmnst]|qu|jusqu|lorsqu|quoiqu|puisqu)['’´]";
+    $FClitic = "-t-elles?|-t-ils?|-t-on|-ce|-elles?|-ils?|-je|-la|-les?|-leur|-lui|-mêmes?|-m['’´]|-moi|-nous|-on|-toi|-tu|-t['’´]|-vous|-en|-y|-ci|-là";
+}
+if (defined($opt_p)) {
+    # Portuguese
+    $FClitic = "-a|-as|-la|-las|-lha|-lhas|-lhe|-lhes|-lho|-lhos|-lo|-los|-ma|-mas|-me|-mo|-mos|-na|-nas|-no|-no-la|-no-las|-no-lo|-no-los|-nos|-o|-os|-s|-se|-se-á|-se-ão|-se-é|-se-ia|-se-lha|-se-lhas|-se-lhe|-se-lhes|-se-lho|-se-lhos|-se-nos|-se-vos|-ta|-tas|-te|-to|-tos|-vo-la|-vo-las|-vo-lo|-vo-los|-vos";
 }
 if (defined($opt_z)) {
     # Galician
     $FClitic = '-la|-las|-lo|-los|-nos';
+}
+if (defined($opt_c)) {
+    # Catalan
+    $PClitic = "[dlmnst]['’´]";
+    $FClitic = "['’´](n|s|ls|l|hi|ns|t|m|ho)|-(se|lo|la|li|los|les|hi|ho|ne|nos|me|s|te|m)";
 }
 
 
@@ -91,6 +100,7 @@ if (defined($opt_a)) {
 my $first_line = 1;
 while (<>) {
     $_ = decode('utf8',$_);
+
     # delete optional byte order markers (BOM)
     if ($first_line) {
 	undef $first_line;
@@ -98,8 +108,8 @@ while (<>) {
     }
 
     # replace newlines and tab characters with blanks
-    #tr/\n\t/  /;
-	#s/[\n\t\p{XPosixCntrl}]/ /g;
+    tr/\n\t/  /;
+    #s/[\n\t\p{XPosixCntrl}]/ /g;  # more general version
 
     # replace blanks within SGML tags
     while (s/(<[^<> ]*) ([^<>]*>)/$1\377$2/g) {
@@ -167,7 +177,7 @@ while (<>) {
 		    }
 
 		    # cut off trailing periods if punctuation precedes
-		    elsif (s/([$FChar])\.$//) { 
+		    elsif (s/([$FChar]|\))\.$//) { 
 			$suffix = ".\n$suffix";
 			if ($_ eq "") {
 			    $_ = $1;
@@ -209,7 +219,7 @@ while (<>) {
 		    print encode('utf8',"$1\n");
 		}
 		if ($PClitic ne '') {
-		    while (s/^($PClitic)(.)/$2/) {
+		    while (s/^($PClitic)(.)/$2/i) {
 			print encode('utf8',"$1\n");
 		    }
 		}
@@ -218,7 +228,7 @@ while (<>) {
 		    $suffix = "$2\n$suffix";
 		}
 		if ($FClitic ne '') {
-		    while (s/(.)($FClitic)$/$1/) {
+		    while (s/(.)($FClitic)$/$1/i) {
 			$suffix = "$2\n$suffix";
 		    }
 		}

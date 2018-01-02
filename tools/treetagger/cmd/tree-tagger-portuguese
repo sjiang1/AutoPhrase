@@ -2,9 +2,9 @@
 
 # Set these paths appropriately
 
-BIN=./bin
-CMD=./cmd
-LIB=./lib
+BIN=/home/docio/git/AutoPhrase/tools/treetagger/bin
+CMD=/home/docio/git/AutoPhrase/tools/treetagger/cmd
+LIB=/home/docio/git/AutoPhrase/tools/treetagger/lib
 
 TOKENIZER=${BIN}/separate-punctuation
 SPLITTER=${CMD}/portuguese-splitter.perl
@@ -14,13 +14,13 @@ POST_TAGGING=${CMD}/portuguese-post-tagging
 PARFILE=${LIB}/portuguese-utf8.par
 
 # splitting 
-#$SPLITTER $* |
+$SPLITTER $* |
 # pre-tokenization
-#sed "s/\([\)\"\'\?\!]\)\([\.\,\;\:]\)/ \1 \2/g" |
+sed "s/\([\)\"\'\?\!]\)\([\.\,\;\:]\)/ \1 \2/g" |
 # tokenizing
-#$TOKENIZER +1 +s +l $ABBR_LIST |
+$TOKENIZER +1 +s +l $ABBR_LIST |
 # remove empty lines
-#grep -v '^$' |
+grep -v '^$' |
 # tagging
-$TAGGER $PARFILE -quiet
+$TAGGER $PARFILE -token -lemma -sgml | 
 $POST_TAGGING -no

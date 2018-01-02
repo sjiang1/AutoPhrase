@@ -54,7 +54,8 @@ rm -f ./tmp/pos_tags.txt
 echo -ne "Current step: Merging...\033[0K\r"
 for f in tmp/split_files.*.tagged
 do
-    cat $f >> ./tmp/pos_tags.txt
+    #cat $f >> ./tmp/pos_tags.txt
+    cut -f 2 $f >> ./tmp/pos_tags.txt 
 done
 echo
 

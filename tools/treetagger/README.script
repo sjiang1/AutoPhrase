@@ -51,12 +51,10 @@ cmd/filter-coordinate-output.perl needed by the French chunker
 ----------------------------------------------------
 
 These files are needed by the shell scripts and *not* contained in this 
-tar-file. They can be downloaded either as Linux programs or as SunOS
-programs at the following URL address:
-http://www.ims.uni-stuttgart.de/Tools/DecisionTreeTagger.html
-The tar files should be unpacked in the same directory as the scripts.
-the parameter files should be moved to the lib subdirectory and
-uncompressed.
+tar-file. They can be downloaded either as Linux programs or as MacOS
+programs at the following URL:
+http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+For installation, please follow the instructions on that webpage.
 
 bin/tree-tagger		the tagger program proper
 bin/separate-punctuation	tokenizer program
