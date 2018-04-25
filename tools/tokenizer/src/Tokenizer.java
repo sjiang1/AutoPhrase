@@ -51,6 +51,7 @@ import java.util.Properties;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.MyStaticValue;
 
 class SpecialTagger {
 	public String[] tag(String text) {
@@ -90,7 +91,8 @@ class ChineseTagger extends SpecialTagger{
 
 	@Override
 	public String[] tag(String text) {
-		Result result = tagger.parseStr(text);
+		Result result = tagger.parse(text);
+		MyStaticValue.isRealName = true;
 		String[] ret = new String[result.size()];
 		int ptr = 0;
 		for (Term term : result.getTerms()) {
@@ -285,17 +287,23 @@ public class Tokenizer {
         String[] results = tagger.tag(line);
         for (String taggedToken : results) {
         	String[] parts = taggedToken.split("/");
-        	if (parts.length == 2) {
-        		tokens.add(parts[0]);
-        		tags.add(parts[1]);
-        	} else if (parts.length > 0) {
+        	if (parts.length >= 2) {
+                String token = "";
+                for (int i = 0; i + 1 < parts.length; ++ i) {
+                    if (i > 0) {
+                        token += "/";
+                    }
+                    token += parts[i];
+                }
+                tokens.add(token);
+                tags.add(parts[parts.length - 1]);
+            } else if (parts.length > 0) {
         		if (parts[0].length() == 1 && Character.isWhitespace(parts[0].charAt(0))) {
         			continue;
         		}
         		tokens.add(parts[0]);
         		tags.add("UNKNOWN");
         	}
-
         }
         arr.add(tokens);
         arr.add(tags);
@@ -636,6 +644,7 @@ public class Tokenizer {
                                     char newChar = (char)reader.read();
                                     buffer += newChar;
                                 }
+                                
                                 // String newLine = reader.readLine();
                                 // if (!newLine.trim().isEmpty()) {
                                 //     buffer += newLine + '\n';
@@ -652,7 +661,6 @@ public class Tokenizer {
                             int ptr = buffer.indexOf(token);
                             writer.write(buffer.substring(0, ptr));
                             buffer = buffer.substring(ptr, buffer.length());
-
                             if (tokenID.equals(parts[i])) {
                                 found = true;
                                 if (isPhrase) {
@@ -673,6 +681,12 @@ public class Tokenizer {
                     }
                 }
             }
+
+            while (reader.ready()) {
+                char newChar = (char)reader.read();
+                buffer += newChar;
+            }
+            writer.write(buffer);
 
             reader.close();
             tokenizedRawReader.close();
@@ -722,6 +736,7 @@ public class Tokenizer {
                 }
                 if (language.equals("JA") || language.equals("CN")) {
                     tag_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newTargetFileFolder + "pos_tags_" + parts[parts.length - 1]), "UTF8"));
+                    raw_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newTargetFileFolder + "raw_" + parts[parts.length - 1]), "UTF8"));
                 } else {
                     raw_writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newTargetFileFolder + "raw_" + parts[parts.length - 1]), "UTF8"));
                 }
@@ -762,7 +777,8 @@ public class Tokenizer {
                 }
                 if (tag_writer != null) {
                     tag_writer.close();
-                } else {
+                }
+                if (raw_writer != null) {
                     raw_writer.close();
                 }
             }

@@ -22,9 +22,9 @@ void process(const vector<TOTAL_TOKENS_TYPE>& tokens, const vector<POS_ID_TYPE>&
 {
     ++ sentences;
     if (ENABLE_POS_TAGGING) {
-        segmenter.viterbi(tokens, tags, f, pre);
+        segmenter.viterbi_for_testing(tokens, tags, f, pre, SEGMENT_MULTI_WORD_QUALITY_THRESHOLD, SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD);
     } else {
-        segmenter.viterbi(tokens, f, pre);
+        segmenter.viterbi_for_testing(tokens, f, pre, SEGMENT_MULTI_WORD_QUALITY_THRESHOLD, SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD);
     }
 
     int i = (int)tokens.size();
@@ -41,9 +41,12 @@ void process(const vector<TOTAL_TOKENS_TYPE>& tokens, const vector<POS_ID_TYPE>&
             }
             u = trie[u].children[tokens[k]];
         }
-        quality &= trie[u].id >= 0 && (
-                    patterns[trie[u].id].size() > 1 && patterns[trie[u].id].quality >= SEGMENT_MULTI_WORD_QUALITY_THRESHOLD ||
-                    patterns[trie[u].id].size() == 1 && patterns[trie[u].id].quality >= SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD
+        quality &= trie[u].id == patterns.size() && ( // These phrases are in the wiki_quality.txt, their quality scores are treated as 1.
+                        i - j > 1 && 1 >= SEGMENT_MULTI_WORD_QUALITY_THRESHOLD ||
+                        i - j == 1 && 1 >= SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD) || 
+                   trie[u].id < patterns.size() && trie[u].id >= 0 && (
+                        patterns[trie[u].id].size() > 1 && patterns[trie[u].id].quality >= SEGMENT_MULTI_WORD_QUALITY_THRESHOLD ||
+                        patterns[trie[u].id].size() == 1 && patterns[trie[u].id].quality >= SEGMENT_SINGLE_WORD_QUALITY_THRESHOLD
                    );
         if (quality) {
             ret.push_back("</phrase>");
@@ -95,7 +98,7 @@ int main(int argc, char* argv[])
 
     sort(patterns.begin(), patterns.end(), byQuality);
 
-    constructTrie(); // update the current frequent enough patterns
+    constructTrie(false); // update the current frequent enough patterns
 
     Segmentation* segmenter;
     if (ENABLE_POS_TAGGING) {

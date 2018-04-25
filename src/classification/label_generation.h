@@ -9,6 +9,7 @@
 
 using Documents::totalWordTokens;
 using Documents::wordTokens;
+using Documents::stopwords;
 
 using FrequentPatternMining::Pattern;
 using FrequentPatternMining::patterns;
@@ -36,6 +37,37 @@ inline vector<Pattern> loadLabels(string filename)
         }
     }
     cerr << "# of loaded labels = " << ret.size() << endl;
+    return ret;
+}
+
+inline vector<Pattern> loadTruthPatterns(string filename)
+{
+    vector<Pattern> ret;
+    FILE* in = tryOpen(filename, "r");
+    while (getLine(in)) {
+        stringstream sin(line);
+        bool valid = true;
+        Pattern p;
+        for (string s; sin >> s;) {
+            bool possibleInt = false;
+            for (int i = 0; i < s.size(); ++ i) {
+                possibleInt |= isdigit(s[i]);
+            }
+            if (possibleInt) {
+                TOKEN_ID_TYPE x;
+                fromString(s, x);
+                if (x < 0) {
+                    valid = false;
+                    break;
+                }
+                p.append(x);
+            }
+        }
+        if (valid) {
+            ret.push_back(p);
+        }
+    }
+    fclose(in);
     return ret;
 }
 
@@ -143,7 +175,10 @@ inline vector<Pattern> generateAll(string LABEL_METHOD, string LABEL_FILE, strin
             if (patterns[i].size() < 1) {
                 continue;
             }
-            if (include.count(patterns[i].hashValue)) {
+            if (patterns[i].size() == 1 && stopwords.count(patterns[i].tokens[0])) {
+                ret.push_back(patterns[i]);
+                ret.back().label = 0;
+            } else if (include.count(patterns[i].hashValue)) {
                 if (needPos) {
                     ret.push_back(patterns[i]);
                     ret.back().label = 1;

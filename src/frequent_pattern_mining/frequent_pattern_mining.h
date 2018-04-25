@@ -114,7 +114,7 @@ namespace FrequentPatternMining
 
 // === global variables ===
     TOTAL_TOKENS_TYPE *unigrams; // 0 .. Documents::maxTokenID
-    vector<Pattern> patterns;
+    vector<Pattern> patterns, truthPatterns;
     vector<vector<TOTAL_TOKENS_TYPE>> id2ends;
     unordered_map<ULL, PATTERN_ID_TYPE> pattern2id;
 
@@ -197,7 +197,7 @@ namespace FrequentPatternMining
 
     vector<bool> noExpansion, noInitial;
 
-    inline bool pruneByPOSTag(int st, int ed) {
+    inline bool pruneByPOSTag(TOTAL_TOKENS_TYPE st, TOTAL_TOKENS_TYPE ed) {
         if (ENABLE_POS_PRUNE) {
             POS_ID_TYPE lastPos = Documents::posTags[ed];
             if (st == ed && noInitial[lastPos] && noExpansion[lastPos]) {
