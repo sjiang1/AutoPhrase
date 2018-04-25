@@ -1,6 +1,6 @@
 # AutoPhrase: Automated Phrase Mining from Massive Text Corpora
 
-## Siyuan's Fork of [Waleking's fork](https://github.com/waleking/AutoPhrase) of [Shangjingbo1226's Autophrase](https://github.com/shangjingbo1226/AutoPhrase)
+## Siyuan's Fork of [Waleking's fork](https://github.com/waleking/AutoPhrase) of [Autophrase](https://github.com/shangjingbo1226/AutoPhrase)
 * Sync with the original repository to fetch some fixes made by shangjingbo1226.
 
 ---
